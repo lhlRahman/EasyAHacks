@@ -1,7 +1,7 @@
 // server.js
 import express from 'express';
 import { config } from 'dotenv';
-import { mintRaceNFT, mintAchievementNFT, PINATA_GATEWAY, getSdk } from './nftFunctions.js';
+import { mintRaceNFT, mintAchievementNFT, PINATA_GATEWAY, getSdk, getRacesByPlayer } from './nftFunctions.js';
 import { generateImage, getGeocode, gptCompletion } from './gpt.js';
 
 config();
@@ -124,6 +124,21 @@ app.get('/geocode', async (req, res) => {
     } catch (error) {
         console.error('Error geocoding:', error);
         res.status(500).json({ error: 'Failed to geocode location', details: error instanceof Error ? error.message : String(error) });
+    }
+});
+
+app.post("/getinfo", async (req, res) => {
+    try {
+        const { playerAddress } = req.body;
+        if (!playerAddress) {
+            return res.status(400).json({ error: 'Player address is required' });
+        }
+        const races = await getRacesByPlayer(playerAddress);
+
+        res.json(races);
+    } catch (error) {
+        console.error('Error getting player info:', error);
+        res.status(500).json({ error: 'Failed to get player info', details: error instanceof Error ? error.message : String(error) });
     }
 });
 

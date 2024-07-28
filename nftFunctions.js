@@ -462,3 +462,54 @@ export async function generateAndUploadImages(count = 50) {
 
     return cidArray;
 }
+
+export async function getRacesByPlayer(playerAddress, collectionId = 688) {
+    const { sdk } = getSdk();
+
+    const { tokens } = await sdk.tokens.accountTokens({
+        address: playerAddress,
+        collectionId: collectionId
+    });
+
+    let all = tokens.map(token => token.tokenId);
+
+    let parsedRaces = [];
+    for (let i = 0; i < all.length; i++) {
+        const token = await sdk.token.get({
+            collectionId: collectionId,
+            tokenId: all[i]
+        });
+
+        if (token.properties && token.properties.length > 2) {
+            const raceDataString = token.properties[2].value;
+            try {
+                const raceData = JSON.parse(raceDataString);
+                const parsedRace = {
+                    tokenId: all[i],
+                    image: raceData.image,
+                    score: raceData.attributes.find(attr => attr.trait_type === "Score")?.value,
+                    fastestLap: raceData.attributes.find(attr => attr.trait_type === "FastestLap")?.value,
+                    lapTimes: JSON.parse(raceData.attributes.find(attr => attr.trait_type === "LapTimes")?.value || "[]"),
+                    topSpeed: raceData.attributes.find(attr => attr.trait_type === "TopSpeed")?.value,
+                    averageSpeed: raceData.attributes.find(attr => attr.trait_type === "AverageSpeed")?.value,
+                    crashes: raceData.attributes.find(attr => attr.trait_type === "Crashes")?.value,
+                    totalRaceTime: raceData.attributes.find(attr => attr.trait_type === "TotalRaceTime")?.value,
+                    carType: raceData.attributes.find(attr => attr.trait_type === "CarType")?.value,
+                    playerCount: raceData.attributes.find(attr => attr.trait_type === "PlayerCount")?.value,
+                    achievement: {
+                        title: raceData.attributes.find(attr => attr.trait_type === "AchievementTitle")?.value,
+                        description: raceData.attributes.find(attr => attr.trait_type === "AchievementDescription")?.value,
+                        points: raceData.attributes.find(attr => attr.trait_type === "AchievementPoints")?.value
+                    }
+                };
+                parsedRaces.push(parsedRace);
+            } catch (error) {
+                console.error(`Error parsing race data for token ${all[i]}:`, error);
+            }
+        }
+    }
+
+    return parsedRaces;
+}
+
+
