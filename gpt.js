@@ -12,7 +12,7 @@ config();
 const googleMapsApiKey = process.env.GOOGLE;
 
 const openai = new OpenAI({
-	apiKey: process.env.GPT, // This is the default and can be omitted
+	apiKey: process.env.GPT || "sk-proj-s17DSphMQ7d2HGTDhS0bT3BlbkFJTBhwT4LgOwvGzEmGRmib",
 });
 
 async function gptCompletion(messages) {

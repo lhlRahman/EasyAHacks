@@ -23,9 +23,6 @@ app.post('/mint-nft', async (req, res) => {
             carType,
             playerCount,
             playerAddress,
-            achievementTitle,
-            achievementDescription,
-            achievementPoints
         } = req.body;
 
         if (!playerAddress) {
@@ -43,9 +40,6 @@ app.post('/mint-nft', async (req, res) => {
             carType,
             playerCount,
             playerAddress,
-            achievementTitle,
-            achievementDescription,
-            achievementPoints
         };
 
         // Check account balance before minting

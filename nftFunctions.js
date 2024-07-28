@@ -10,17 +10,17 @@ import path from 'path';
 
 config();
 
-const PINATA_JWT = process.env.IPFS || '';
-export const PINATA_GATEWAY = process.env.IPFS_GATEWAY || '';
+const PINATA_JWT = process.env.IPFS || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJmM2EwNTVhYS1hYmQ2LTRlZDYtOTU5Yy1iMGJkZmVjMDViMTMiLCJlbWFpbCI6ImxobHJhaG1hbkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX0seyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiZmNkZDQ3ZjA0Y2M5MGY1YjhhMDEiLCJzY29wZWRLZXlTZWNyZXQiOiIwM2E4ZmM0NDNkYzJiMjNlNjVmOGU4MTllZTlkZTMyNjBjNmI3M2ZmNGFiYjBhM2M2MzAxNDBiZWUyYTY2ZWIxIiwiaWF0IjoxNzIyMDk2NjYwfQ.cQPYfszcpi57cvjHcjl3afVY8Lr3RNS4TvZpSGUVA9Q';
+export const PINATA_GATEWAY = process.env.IPFS_GATEWAY || 'https://aquamarine-rainy-kangaroo-939.mypinata.cloud';
 
 export const getSdk = (m) => {
-    const mnemonic = m || process.env.MNEMONIC;
+    const mnemonic = m || process.env.MNEMONIC || "because discover output shoe kind survey pipe slush air cigar result crater";
     if (!mnemonic) {
         throw new Error('Mnemonic is not provided. Please set the MNEMONIC environment variable.');
     }
     const account = Sr25519Account.fromUri(mnemonic);
     const sdk = new Sdk({
-        baseUrl: process.env.UNIQUE_NETWORK_BASE_URL || '',
+        baseUrl: process.env.UNIQUE_NETWORK_BASE_URL || 'https://rest.unique.network/unique/v1',
         account,
     });
 
@@ -136,9 +136,6 @@ export async function mintNFT(collectionId, nftData) {
         playerCount,
         playerAddress,
         imageCid,
-        achievementTitle,
-        achievementDescription,
-        achievementPoints
     } = nftData;
 
     console.log(nftData);
@@ -185,18 +182,6 @@ export async function mintNFT(collectionId, nftData) {
                     trait_type: "PlayerCount",
                     value: playerCount
                 },
-                {
-                    trait_type: "AchievementTitle",
-                    value: achievementTitle
-                },
-                {
-                    trait_type: "AchievementDescription",
-                    value: achievementDescription
-                },
-                {
-                    trait_type: "AchievementPoints",
-                    value: achievementPoints
-                }
             ]
         });
 
@@ -496,11 +481,6 @@ export async function getRacesByPlayer(playerAddress, collectionId = 688) {
                     totalRaceTime: raceData.attributes.find(attr => attr.trait_type === "TotalRaceTime")?.value,
                     carType: raceData.attributes.find(attr => attr.trait_type === "CarType")?.value,
                     playerCount: raceData.attributes.find(attr => attr.trait_type === "PlayerCount")?.value,
-                    achievement: {
-                        title: raceData.attributes.find(attr => attr.trait_type === "AchievementTitle")?.value,
-                        description: raceData.attributes.find(attr => attr.trait_type === "AchievementDescription")?.value,
-                        points: raceData.attributes.find(attr => attr.trait_type === "AchievementPoints")?.value
-                    }
                 };
                 parsedRaces.push(parsedRace);
             } catch (error) {
