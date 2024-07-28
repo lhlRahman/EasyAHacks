@@ -512,4 +512,41 @@ export async function getRacesByPlayer(playerAddress, collectionId = 688) {
     return parsedRaces;
 }
 
+export async function getAchievementsByPlayer(playerAddress, collectionId = 689) {
+    const { sdk } = getSdk();
+
+    const { tokens } = await sdk.tokens.accountTokens({
+        address: playerAddress,
+        collectionId: collectionId
+    });
+
+    let all = tokens.map(token => token.tokenId);
+
+    let parsedAchievements = [];
+    for (let i = 0; i < all.length; i++) {
+        const token = await sdk.token.get({
+            collectionId: collectionId,
+            tokenId: all[i]
+        });
+
+        if (token.properties && token.properties.length > 2) {
+            const achievementDataString = token.properties[2].value;
+            try {
+                const achievementData = JSON.parse(achievementDataString);
+                const parsedAchievement = {
+                    tokenId: all[i],
+                    image: achievementData.image,
+                    title: achievementData.attributes.find(attr => attr.trait_type === "AchievementTitle")?.value,
+                    description: achievementData.attributes.find(attr => attr.trait_type === "AcheivementDescription")?.value,
+                    points: achievementData.attributes.find(attr => attr.trait_type === "achcivementPoints")?.value
+                };
+                parsedAchievements.push(parsedAchievement);
+            } catch (error) {
+                console.error(`Error parsing achievement data for token ${all[i]}:`, error);
+            }
+        }
+    }
+
+    return parsedAchievements;
+}
 
