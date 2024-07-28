@@ -10,9 +10,10 @@ config();
 
 
 const googleMapsApiKey = process.env.GOOGLE;
+const openaiApiKey = process.env.GPT;
 
 const openai = new OpenAI({
-	apiKey: process.env.GPT || "sk-proj-s17DSphMQ7d2HGTDhS0bT3BlbkFJTBhwT4LgOwvGzEmGRmib",
+	apiKey: openaiApiKey,
 });
 
 async function gptCompletion(messages) {

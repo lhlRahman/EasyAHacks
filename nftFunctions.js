@@ -295,7 +295,7 @@ export async function createAchievementCollection(name, description, symbol, cov
 
 export async function mintAchievementNFT(nftData) {
     try {
-        const collectionId = 689; // Use your actual collection ID
+        const collectionId = '689'; // Use your actual collection ID
 
         console.log("Generating image...");
         const imageUrl = await generateImage();
