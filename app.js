@@ -18,10 +18,9 @@ app.post('/mint-nft', async (req, res) => {
             lapTimes,
             topSpeed,
             averageSpeed,
-            crashes,
+            eliminations,
             totalRaceTime,
             carType,
-            playerCount,
             playerAddress,
         } = req.body;
 
@@ -35,10 +34,9 @@ app.post('/mint-nft', async (req, res) => {
             lapTimes,
             topSpeed,
             averageSpeed,
-            crashes,
+            eliminations,
             totalRaceTime,
             carType,
-            playerCount,
             playerAddress,
         };
 

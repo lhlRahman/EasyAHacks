@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "jest": "^27.0.6",
-    "nodemon": "^2.0.12",
+    "nodemon": "^2.0.22",
     "typescript": "^5.5.4"
   }
 }

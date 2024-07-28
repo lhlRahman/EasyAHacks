@@ -130,10 +130,9 @@ export async function mintNFT(collectionId, nftData) {
         lapTimes,
         topSpeed,
         averageSpeed,
-        crashes,
+        eliminations,
         totalRaceTime,
         carType,
-        playerCount,
         playerAddress,
         imageCid,
     } = nftData;
@@ -167,8 +166,8 @@ export async function mintNFT(collectionId, nftData) {
                     value: averageSpeed
                 },
                 {
-                    trait_type: "Crashes",
-                    value: crashes
+                    trait_type: "TotoalEliminations",
+                    value: eliminations
                 },
                 {
                     trait_type: "TotalRaceTime",
@@ -177,10 +176,6 @@ export async function mintNFT(collectionId, nftData) {
                 {
                     trait_type: "CarType",
                     value: carType
-                },
-                {
-                    trait_type: "PlayerCount",
-                    value: playerCount
                 },
             ]
         });
@@ -477,10 +472,9 @@ export async function getRacesByPlayer(playerAddress, collectionId = 688) {
                     lapTimes: JSON.parse(raceData.attributes.find(attr => attr.trait_type === "LapTimes")?.value || "[]"),
                     topSpeed: raceData.attributes.find(attr => attr.trait_type === "TopSpeed")?.value,
                     averageSpeed: raceData.attributes.find(attr => attr.trait_type === "AverageSpeed")?.value,
-                    crashes: raceData.attributes.find(attr => attr.trait_type === "Crashes")?.value,
+                    eliminations: raceData.attributes.find(attr => attr.trait_type === "Totaleliminations")?.value,
                     totalRaceTime: raceData.attributes.find(attr => attr.trait_type === "TotalRaceTime")?.value,
                     carType: raceData.attributes.find(attr => attr.trait_type === "CarType")?.value,
-                    playerCount: raceData.attributes.find(attr => attr.trait_type === "PlayerCount")?.value,
                 };
                 parsedRaces.push(parsedRace);
             } catch (error) {
